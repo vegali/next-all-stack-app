@@ -4,9 +4,11 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, Vid
 const { Header, Sider, Content } = Layout
 import 'antd/dist/reset.css'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function AntdAdminContainer({ children }: any) {
   const [collapsed, setCollapsed] = useState(false)
+  const router = useRouter()
   const {
     token: { colorBgContainer }
   } = theme.useToken()
@@ -18,20 +20,24 @@ export default function AntdAdminContainer({ children }: any) {
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={['/admin/dashboard']}
+            onClick={item => {
+              console.log(item.key)
+              router.push(item.key)
+            }}
             items={[
               {
-                key: '1',
+                key: '/admin/dashboard',
                 icon: <UserOutlined />,
-                label: 'nav 1'
+                label: 'Dashboard'
               },
               {
-                key: '2',
+                key: '/admin/users',
                 icon: <VideoCameraOutlined />,
-                label: 'nav 2'
+                label: 'Users'
               },
               {
-                key: '3',
+                key: '/admin/login',
                 icon: <UploadOutlined />,
                 label: 'nav 3'
               }

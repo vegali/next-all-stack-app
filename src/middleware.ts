@@ -14,6 +14,13 @@ export function middleware(request: NextRequest) {
         // 跳转到登录页面
         return NextResponse.redirect(new URL('/admin/login', request.url))
       }
+    } else {
+      // 是否登录过
+      if (request.cookies.get('admin-token')) {
+        // 跳转到登录页面
+        return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+      } else {
+      }
     }
   }
 
