@@ -1,7 +1,6 @@
 'use client'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
-import type { AppProps } from 'next/app'
 import 'antd/dist/reset.css'
 import { useEffect, useState } from 'react'
 
