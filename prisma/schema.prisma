@@ -20,3 +20,15 @@ model Goods {
 
   @@map("products")
 }
+
+model Article {
+  id       String   @id @unique @default(uuid())
+  title    String
+  desc     String?  @default("")
+  image    String?  @default("")
+  content  String?  @default("")
+  createAt DateTime @default(now()) @map("create_at")
+  updateAt DateTime @updatedAt @map("update_at")
+
+  @@map("articles")
+}

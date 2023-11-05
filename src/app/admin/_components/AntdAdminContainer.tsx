@@ -37,9 +37,9 @@ export default function AntdAdminContainer({ children }: any) {
                 label: 'Users'
               },
               {
-                key: '/admin/login',
+                key: '/admin/article',
                 icon: <UploadOutlined />,
-                label: 'nav 3'
+                label: 'Article'
               }
             ]}
           />
