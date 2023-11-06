@@ -3,11 +3,16 @@ import { DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant
 import { Button, Card, Form, Input, Modal, Popconfirm, Space, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import MyUpload from '../../_components/MyUpload'
+import dynamic from 'next/dynamic'
+// import MyEditor from '../../_components/MyEditor'
+const MyEditor = dynamic(() => import('../../_components/MyEditor'), { ssr: false })
 
 type Article = {
   id: string
   title: string
   desc: string
+  image: string
+  content: string
 }
 
 export default function ArticlePage() {
@@ -18,6 +23,8 @@ export default function ArticlePage() {
   const [curId, setCurId] = useState('')
   const [total, setTotal] = useState(1)
   const [imageUrl, setImageUrl] = useState<string>('')
+  // 编辑器内容
+  const [html, setHtml] = useState('')
 
   // 监听新建、编辑弹层关闭
   useEffect(() => {
@@ -25,6 +32,7 @@ export default function ArticlePage() {
       // setCurId('')
       // setImageUrl('')
       myForm.resetFields()
+      setHtml('')
     }
   }, [open])
 
@@ -110,6 +118,7 @@ export default function ArticlePage() {
                       myForm.setFieldValue('title', data.title)
                       myForm.setFieldValue('desc', data.desc)
                       setImageUrl(data.image)
+                      setHtml(data.content)
                     }}
                   />
                   <Popconfirm
@@ -118,7 +127,7 @@ export default function ArticlePage() {
                       const res = await fetch('/api/admin/article/' + data.id, {
                         method: 'DELETE'
                       }).then(res => res.json())
-                      setQuery(query)
+                      setQuery({ ...query })
                       console.log(res)
                     }}
                   >
@@ -141,6 +150,7 @@ export default function ArticlePage() {
         }}
         destroyOnClose={true}
         maskClosable={true}
+        width={'75vw'}
       >
         <Form
           preserve={false} // 与modal 结合使用，关闭销毁
@@ -150,14 +160,14 @@ export default function ArticlePage() {
             if (curId) {
               await fetch(`/api/admin/article/${curId}`, {
                 method: 'PUT',
-                body: JSON.stringify({ ...v, image: imageUrl })
+                body: JSON.stringify({ ...v, image: imageUrl, content: html })
               }).then(res => res.json())
             } else {
               console.log('create')
 
               await fetch('/api/admin/article', {
                 method: 'POST',
-                body: JSON.stringify({ ...v, image: imageUrl })
+                body: JSON.stringify({ ...v, image: imageUrl, content: html })
               }).then(res => res.json())
             }
             setOpen(false)
@@ -170,9 +180,11 @@ export default function ArticlePage() {
           <Form.Item label="简介" name="desc">
             <Input.TextArea placeholder="请输入简介" />
           </Form.Item>
-          {imageUrl}
           <Form.Item label="封面" name="image">
             <MyUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          </Form.Item>
+          <Form.Item>
+            <MyEditor html={html} setHtml={setHtml} />
           </Form.Item>
         </Form>
       </Modal>
