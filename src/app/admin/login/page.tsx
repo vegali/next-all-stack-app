@@ -2,6 +2,7 @@
 import { Card, Form, Button, Input } from 'antd'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import LoginBtn from '../_components/LoginBtn'
 
 export default function LoginPage() {
   const nav = useRouter()
@@ -35,6 +36,7 @@ export default function LoginPage() {
             </Button>
           </Form.Item>
         </Form>
+        <LoginBtn />
       </Card>
     </div>
   )
